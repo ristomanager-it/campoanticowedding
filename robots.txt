@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://campoanticowedding.it/sitemap.xml
