@@ -426,5 +426,6 @@ session_id:(function(){try{return sessionStorage.getItem('rf_sid')}catch(e){retu
 var n=0,iv=setInterval(function(){n++;if(window.clarity){try{clarity('set','arrivo',arr);clarity('set','app',app);if(da)clarity('set','da',da);}catch(e){}clearInterval(iv);}else if(n>60)clearInterval(iv);},2000);
 }catch(e){}})();
 </script>
+<script>/* apre i pacchetti quando si arriva o si clicca su #packages (annunci "cost") */(function(){function op(){if(location.hash==='#packages'){var d=document.getElementById('pkd');if(d)d.open=true;}}op();window.addEventListener('hashchange',op);document.addEventListener('click',function(e){var a=e.target.closest('[data-open]');if(a){var d=document.getElementById(a.getAttribute('data-open'));if(d)d.open=true;}},true);})();</script>
 </body>
 </html>
