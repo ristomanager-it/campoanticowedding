@@ -252,7 +252,7 @@ details.open-sec[open]>summary{display:none}
 .lb{position:fixed;inset:0;background:rgba(10,10,10,.92);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
 .lb img{max-width:100%;max-height:100%}.lb.on{display:flex}
 </style>
-</head>
+<style>.reqok{border:1.5px solid currentColor;border-radius:14px;padding:18px;margin-top:10px}.reqok h3{margin:0 0 8px}#reqWa{margin-left:8px}@media(max-width:640px){#reqWa{margin:10px 0 0;display:inline-block}}</style></head>
 <body>
 <header class="hero">
   <picture><source media="(max-width:640px)" srcset="https://campoanticowedding.it/img/real/hero-couple-poolside-kiss-mobile.jpg"><img src="https://campoanticowedding.it/img/real/hero-couple-poolside-kiss.jpg" alt="Bride and groom kissing by the pool at night, wedding at Campo Antico near Rome" width="1800" height="1200" fetchpriority="high"></picture>
@@ -304,7 +304,7 @@ details.open-sec[open]>summary{display:none}
 <label>Vuestros nombres<input id="fN" autocomplete="name"></label><label>Email<input id="fE" type="email" autocomplete="email"></label>
 <label>País<input id="fC" autocomplete="country-name"></label><label>Fecha o mes de la boda<input id="fW"></label>
 <label>Número de invitados<input id="fG" type="number" min="10" max="400"></label><label class="full">¿Algo más que debamos saber?<textarea id="fM" name="text" rows="3"></textarea></label>
-<div class="full"><button class="btn" type="submit">Escribidnos por WhatsApp</button></div></form></div></section></main>
+<div class="full"><button class="btn" type="submit">Enviar mi solicitud</button> <a class="btn ghost" id="reqWa" href="https://wa.me/393930965070" target="_blank" rel="noopener">¿Prefieres WhatsApp? Escríbenos</a><p id="reqMsg" class="note" hidden></p></div><input id="reqHp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0"></form></div></section></main>
 <footer><div class="wrap"><p>Campo Antico Ricevimenti srls · Loc. Campo Antico snc, 01028 Orte (VT), Italia · IVA IT02456030564 · WhatsApp <a href="https://wa.me/393930965070">+39 393 096 5070</a></p><p>Fotos de Campo Antico © Campo Antico. Otras fotos de Wikimedia Commons: Repuli (CC BY-SA 4.0), Wilfredor (CC0), New2022 (CC BY-SA 4.0), Luca Nebuloni (CC BY 2.0), Rob &amp; Lisa Meehan (CC BY 2.0), Alessio Maffeis (CC BY 2.0), Martin Falbisoner (CC BY-SA 4.0).</p></div></footer>
 <script>
 (function(){
@@ -333,8 +333,7 @@ lb("cDin",P.cd,1);lb("cBru",P.br,1);lb("cShu",P.nv,0);lb("xNight",P.gn,1);lb("xC
 var f=$("cFarm");if(f){var s=f.closest("label").querySelectorAll("span");s[s.length-1].textContent=m(P.fn)}
 var PKM={pacchetto_classic_60:"classic",pacchetto_signature_60:"signature",pacchetto_grand_60:"grand"};d.forEach(function(x){var k=PKM[x.chiave];if(k)document.querySelectorAll('[data-pk="'+k+'"]').forEach(function(el){el.textContent=m(+x.valore)})});
 calc()}).catch(function(){})})();
-$("req").addEventListener("submit",function(ev){ev.preventDefault();var t=[[S.f_names,$("fN").value],[S.f_email,$("fE").value],[S.f_country,$("fC").value],[S.f_when,$("fW").value],[S.f_guests,$("fG").value]].map(function(x){return x[0]+": "+x[1]}).join("\n")+"\n\n"+rowsTxt+"\n\n"+$("fM").value;
-window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(t),"_blank")});
+/* richiesta salvata in Ristoflow (wedding-richiesta); WhatsApp resta come seconda scelta */var RQ={"send": "Enviar mi solicitud", "or_wa": "¿Prefieres WhatsApp? Escríbenos", "ok_t": "Gracias — hemos recibido vuestra solicitud", "ok_p": "Os respondemos hoy por email con una propuesta para vuestra fecha y vuestros invitados. Si queréis, también podéis escribirnos ahora por WhatsApp.", "wa": "Escríbenos por WhatsApp", "err_c": "Indicad vuestros nombres y email.", "err": "Algo ha fallado: inténtalo de nuevo o escríbenos por WhatsApp.", "wait": "Enviando…"};function testoWa(){return [[S.f_names,$("fN").value],[S.f_email,$("fE").value],[S.f_country,$("fC").value],[S.f_when,$("fW").value],[S.f_guests,$("fG").value]].map(function(x){return x[0]+": "+x[1]}).join("\n")+"\n\n"+rowsTxt+"\n\n"+$("fM").value}var waL=$("reqWa");if(waL)waL.addEventListener("click",function(){waL.href="https://wa.me/"+WA+"?text="+encodeURIComponent(testoWa())});$("req").addEventListener("submit",function(ev){ev.preventDefault();var ms=$("reqMsg");if(!$("fN").value.trim()||!/\S+@\S+\.\S+/.test($("fE").value)){ms.hidden=false;ms.textContent=RQ.err_c;return}var b=$("req").querySelector("button[type=submit]");b.disabled=true;ms.hidden=false;ms.textContent=RQ.wait;var q=new URLSearchParams(location.search),pk=(document.querySelector("input[name=pk]:checked")||{}).value||"";fetch("https://cuhcscpvhypoaplcmtjk.supabase.co/functions/v1/wedding-richiesta",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({nomi:$("fN").value,email:$("fE").value,paese:$("fC").value,data_matrimonio:$("fW").value,invitati:$("fG").value,pacchetto:pk,messaggio:($("fM").value+"\n\n"+rowsTxt).trim(),lingua:document.documentElement.lang,utm_source:q.get("utm_source")||"",utm_campaign:q.get("utm_campaign")||"",sito_web:($("reqHp")||{}).value||""})}).then(function(r){return r.json()}).then(function(j){b.disabled=false;if(!j||!j.success){ms.textContent=RQ.err;return}try{if(window.fbq)fbq("track","Lead",{content_name:"wedding"});if(window.gtag)gtag("event","generate_lead",{event_category:"wedding"});if(window.rfEvento)rfEvento("prenotazione_completata")}catch(_){}var wa="https://wa.me/"+WA+"?text="+encodeURIComponent(testoWa());$("req").outerHTML='<div class="reqok"><h3>'+RQ.ok_t+'</h3><p>'+RQ.ok_p+'</p><a class="btn ghost" href="'+wa+'" target="_blank" rel="noopener">'+RQ.wa+'</a></div>';ms.hidden=true}).catch(function(){b.disabled=false;ms.textContent=RQ.err})});
 })();
 </script>
 
@@ -384,7 +383,7 @@ else if(a.tagName==='SUMMARY')t('click','faq',a.textContent.trim().slice(0,80));
 else if(h.charAt(0)==='#'){t('click','vai_'+h.slice(1));if(window.rfEvento)rfEvento(h==='#price'||h==='#book'?'cta_prenota':'click_menu');}
 else if(a.closest('.langs'))t('click','lingua',a.textContent.trim());
 else if(h.indexOf('campo-antico-')>=0)t('click','altro_sito',h);},true);
-var f=document.getElementById('req');if(f)f.addEventListener('submit',function(){t('submit','richiesta_whatsapp',null,true);if(window.rfEvento)rfEvento('wame');},true);
+var f=document.getElementById('req');if(f)f.addEventListener('submit',function(){t('submit','richiesta_wedding',null,true);},true);
 var vd=document.querySelector('video');if(vd)vd.addEventListener('play',function(){t('click','video_play');if(window.rfEvento)rfEvento('click_menu');},{once:true});
 
 var SC={};function scr(){var h=document.documentElement,p=Math.round((window.scrollY+window.innerHeight)/Math.max(1,h.scrollHeight)*100);[25,50,75,100].forEach(function(k){if(p>=k&&!SC[k]){SC[k]=1;t('scroll',String(k));}});}
