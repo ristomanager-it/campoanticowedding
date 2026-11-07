@@ -122,6 +122,7 @@ body:JSON.stringify({azienda_id:AZ,pagina:PAG,pagina_id:AZ,tipo:tipo,elemento:el
 utm_source:p.get('utm_source'),utm_medium:p.get('utm_medium'),utm_campaign:p.get('utm_campaign'),
 device:/Mobi/.test(navigator.userAgent)?'mobile':'desktop',session_id:SID,completato:!!ok})}).catch(function(){});}
 t('view','pagina');
+document.querySelectorAll('a[href*="app.ristoflow-ai.com"]').forEach(function(a){try{var u=new URL(a.href);u.searchParams.set('sid',SID);a.href=u.toString();}catch(e){}});
 document.addEventListener('click',function(e){var a=e.target.closest('a,button,summary');if(!a)return;
 var h=a.getAttribute('href')||'';
 if(h.indexOf('visita.html')>=0){t('submit','visita',a.textContent.trim().slice(0,40),true);if(window.rfEvento)rfEvento('cta_prenota');}
