@@ -251,6 +251,7 @@ document.getElementById("ck-no").onclick=function(){try{localStorage.setItem("rf
     } catch (x) { r = null; }
     if (!r || r.error || !r.data || r.data.ok !== true) { inviando = false; b.disabled = false; b.textContent = "Invia la richiesta"; return errore((r && r.data && r.data.errore) || "Non siamo riusciti a inviare la richiesta. Riprova o chiamaci."); }
     ev("Lead", { content_name: L.chiave, value: 0, currency: "EUR" }, true);
+    b.textContent = "Richiesta inviata ✓";
     $("modulo").hidden = true; $("grazie").hidden = false; acconto(r.data, azienda, $("data").value, email, ref);
     $("grazie").scrollIntoView({ behavior: "smooth", block: "start" });
   });
