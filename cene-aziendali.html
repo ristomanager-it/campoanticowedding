@@ -207,7 +207,7 @@ document.getElementById("ck-no").onclick=function(){try{localStorage.setItem("rf
       } catch (e) { b.disabled = false; m.className = "msg ko"; m.textContent = "Il pagamento non è partito. Riprovate o usate il bonifico."; }
     };
     $("acc-bon").onclick = function(){
-      if (supa) supa.rpc("cena_aziendale_acconto_metodo", { p_id: id, p_metodo: "bonifico" });
+      if (supa) supa.rpc("cena_aziendale_acconto_metodo", { p_id: id, p_metodo: "bonifico" }).then(function(){}, function(){});
       ev("Aziende_Acconto_Bonifico", { value: acc });
       $("acc-box").innerHTML = '<div class="iban"><div class="cr"><span>Intestatario</span><span>' + INTESTATARIO + '</span></div>'
         + '<div class="cr"><span>IBAN</span><span>' + IBAN + '</span></div>'
