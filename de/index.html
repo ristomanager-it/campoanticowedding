@@ -446,5 +446,35 @@ session_id:(function(){try{return sessionStorage.getItem('rf_sid')}catch(e){retu
 var n=0,iv=setInterval(function(){n++;if(window.clarity){try{clarity('set','arrivo',arr);clarity('set','app',app);if(da)clarity('set','da',da);}catch(e){}clearInterval(iv);}else if(n>60)clearInterval(iv);},2000);
 }catch(e){}})();
 </script>
+<!-- rf-contatto-prima v1: prima di aprire WhatsApp chiede nomi ed email e li salva in Ristoflow (wedding-richiesta, fase contatto), cosi' il contatto resta anche se poi non scrivono -->
+<style>#rfc{position:fixed;inset:0;z-index:9999;background:rgba(20,18,15,.55);display:none;align-items:flex-end;justify-content:center}#rfc.on{display:flex}#rfc .bx{background:#fffdf8;color:#2b2620;width:100%;max-width:460px;border-radius:18px 18px 0 0;padding:22px 18px 18px;box-shadow:0 -8px 30px rgba(0,0,0,.2)}@media(min-width:600px){#rfc{align-items:center}#rfc .bx{border-radius:18px}}#rfc h3{margin:0 0 4px;font-size:1.25rem}#rfc p{margin:0 0 14px;font-size:.95rem;opacity:.8}#rfc label{display:block;font-size:.85rem;margin:0 0 10px}#rfc input[type=text],#rfc input[type=email],#rfc input[type=tel]{display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:11px 12px;border:1px solid #d8cfc0;border-radius:10px;font:inherit;font-size:16px;background:#fff}#rfc .ok{display:flex;gap:8px;align-items:flex-start;font-size:.82rem}#rfc .ok input{margin-top:3px}#rfc button{width:100%;margin-top:6px;padding:13px;border:0;border-radius:12px;background:#25d366;color:#fff;font:inherit;font-weight:600;font-size:1rem;cursor:pointer}#rfc .er{color:#b3261e;font-size:.85rem;min-height:1em;margin:4px 0 0}#rfc .x{float:right;background:none;border:0;font-size:1.5rem;line-height:1;color:#2b2620;width:auto;padding:0;margin:0}</style>
+<div id="rfc" role="dialog" aria-modal="true"><div class="bx"><button type="button" class="x" id="rfcX" aria-label="close">×</button><h3 id="rfcT"></h3><p id="rfcP"></p><form id="rfcF" novalidate><label><span id="rfcLN"></span><input type="text" id="rfcN" autocomplete="name"></label><label><span id="rfcLE"></span><input type="email" id="rfcE" autocomplete="email"></label><label><span id="rfcLT"></span><input type="tel" id="rfcTel" autocomplete="tel"></label><label class="ok"><input type="checkbox" id="rfcOk"><span id="rfcLO"></span></label><p class="er" id="rfcEr"></p><button type="submit" id="rfcB"></button></form></div></div>
+<script>(function(){
+var L={en:{t:"Before we chat",p:"Leave your names and email: if WhatsApp doesn't open or you'd rather we write first, we'll send your proposal by email.",n:"Your names",e:"Email",w:"WhatsApp number (optional)",o:"I agree to be contacted on WhatsApp with proposals and offers from Campo Antico.",b:"Continue to WhatsApp",er:"Please add your names and email."},
+de:{t:"Bevor wir schreiben",p:"Hinterlassen Sie Ihre Namen und E-Mail: Falls WhatsApp nicht öffnet oder Sie lieber eine Nachricht von uns möchten, senden wir Ihnen das Angebot per E-Mail.",n:"Ihre Namen",e:"E-Mail",w:"WhatsApp-Nummer (optional)",o:"Ich bin einverstanden, über WhatsApp Angebote von Campo Antico zu erhalten.",b:"Weiter zu WhatsApp",er:"Bitte Namen und E-Mail angeben."},
+nl:{t:"Voordat we chatten",p:"Laat jullie namen en e-mail achter: als WhatsApp niet opent of jullie liever hebben dat wij eerst schrijven, sturen we het voorstel per e-mail.",n:"Jullie namen",e:"E-mail",w:"WhatsApp-nummer (optioneel)",o:"Ik ga ermee akkoord via WhatsApp voorstellen en aanbiedingen van Campo Antico te ontvangen.",b:"Verder naar WhatsApp",er:"Vul jullie namen en e-mail in."},
+es:{t:"Antes de escribirnos",p:"Dejadnos vuestros nombres y email: si WhatsApp no se abre o preferís que os escribamos nosotros, os enviamos la propuesta por email.",n:"Vuestros nombres",e:"Email",w:"Número de WhatsApp (opcional)",o:"Acepto que Campo Antico me contacte por WhatsApp con propuestas y ofertas.",b:"Continuar a WhatsApp",er:"Añadid vuestros nombres y email."},
+it:{t:"Prima di scriverci",p:"Lasciateci nomi ed email: se WhatsApp non si apre o preferite che vi scriviamo noi, vi mandiamo la proposta per email.",n:"I vostri nomi",e:"Email",w:"Numero WhatsApp (facoltativo)",o:"Accetto di essere contattato su WhatsApp con proposte e offerte di Campo Antico.",b:"Continua su WhatsApp",er:"Inserite nomi ed email."}};
+var lg=(document.documentElement.lang||"en").slice(0,2).toLowerCase(),T=L[lg]||L.en,$=function(i){return document.getElementById(i)};
+$("rfcT").textContent=T.t;$("rfcP").textContent=T.p;$("rfcLN").textContent=T.n;$("rfcLE").textContent=T.e;$("rfcLT").textContent=T.w;$("rfcLO").textContent=T.o;$("rfcB").textContent=T.b;
+var K="rf_wedding_contatto",fatto=false;try{fatto=!!localStorage.getItem(K)}catch(_){}
+var dove="",pend=null;
+function apri(href){try{window.location.href=href}catch(_){}}
+function chiudi(){$("rfc").classList.remove("on")}
+$("rfcX").addEventListener("click",chiudi);$("rfc").addEventListener("click",function(e){if(e.target===$("rfc"))chiudi()});
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href*="wa.me"]');if(!a||fatto)return;e.preventDefault();pend=a;dove=(a.id||a.textContent||"").trim().slice(0,60);
+try{var fn=$("fN"),fe=$("fE"),ft=$("fT");if(fn&&fn.value)$("rfcN").value=fn.value;if(fe&&fe.value)$("rfcE").value=fe.value;if(ft&&ft.value)$("rfcTel").value=ft.value}catch(_){}
+$("rfcEr").textContent="";$("rfc").classList.add("on");setTimeout(function(){$("rfcN").focus()},50)},true);
+$("rfcF").addEventListener("submit",function(e){e.preventDefault();var n=$("rfcN").value.trim(),em=$("rfcE").value.trim(),tl=$("rfcTel").value.trim();
+if(!n||!/^\S+@\S+\.\S+$/.test(em)){$("rfcEr").textContent=T.er;return}
+var q=new URLSearchParams(location.search),g=$("fG"),c=$("fC"),w=$("fW"),rw=$("rows"),to=$("tot"),stima=(rw&&rw.innerText.trim())?(rw.innerText.trim()+"\nTotal: "+(to?to.innerText.trim():"")):"";
+var body={fase:"contatto",nomi:n,email:em,telefono:tl,consenso_whatsapp:$("rfcOk").checked,paese:c?c.value:"",data_matrimonio:w?w.value:"",invitati:g?g.value:"",messaggio:"Ha lasciato i contatti prima di aprire WhatsApp ("+dove+")"+(stima?"\n\n"+stima:""),lingua:document.documentElement.lang||lg,utm_source:q.get("utm_source")||"",utm_campaign:q.get("utm_campaign")||""};
+try{fetch("https://cuhcscpvhypoaplcmtjk.supabase.co/functions/v1/wedding-richiesta",{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})}catch(_){}
+try{localStorage.setItem(K,"1")}catch(_){}fatto=true;
+try{var fn=$("fN"),fe=$("fE"),ft=$("fT");if(fn&&!fn.value)fn.value=n;if(fe&&!fe.value)fe.value=em;if(ft&&!ft.value)ft.value=tl}catch(_){}
+try{if(window.fbq)fbq("track","Lead",{content_name:"wedding_contatto"});if(window.gtag)gtag("event","generate_lead",{event_category:"wedding_contatto"});if(window.rfEvento)rfEvento("contatto_lasciato")}catch(_){}
+chiudi();var h=pend?pend.href:"";if(h){var t=encodeURIComponent("\n\n— "+n+" · "+em);h+=(h.indexOf("text=")>=0?t:(h.indexOf("?")>=0?"&":"?")+"text="+t)}setTimeout(function(){apri(h)},150)});
+})();</script>
+
 </body>
 </html>
