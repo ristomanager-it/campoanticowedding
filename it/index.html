@@ -406,6 +406,7 @@ else if(a.closest('.langs'))t('click','lingua',a.textContent.trim());
 else if(h.indexOf('campo-antico-')>=0)t('click','altro_sito',h);},true);
 var f=document.getElementById('req');if(f)f.addEventListener('submit',function(){t('submit','richiesta_wedding',null,true);},true);
 var vd=document.querySelector('video');if(vd)vd.addEventListener('play',function(){t('click','video_play');if(window.rfEvento)rfEvento('click_menu');},{once:true});
+/* rf-video-avanzamento v1: fino a dove guardano il video (25/50/75/100%) e dove lo mettono in pausa */if(vd){var vq={},vp=0;vd.addEventListener('timeupdate',function(){if(!vd.duration)return;var pc=vd.currentTime/vd.duration*100;[25,50,75].forEach(function(q){if(pc>=q&&!vq[q]){vq[q]=1;t('video_avanzamento',String(q),String(Math.round(vd.currentTime)))}})});vd.addEventListener('ended',function(){if(!vq[100]){vq[100]=1;t('video_avanzamento','100',String(Math.round(vd.duration)))}});vd.addEventListener('pause',function(){if(vd.ended||!vd.duration||vp>=3)return;vp++;t('video_pausa',String(Math.round(vd.currentTime/vd.duration*100)),String(Math.round(vd.currentTime)))})}
 
 var SC={};function scr(){var h=document.documentElement,p=Math.round((window.scrollY+window.innerHeight)/Math.max(1,h.scrollHeight)*100);[25,50,75,100].forEach(function(k){if(p>=k&&!SC[k]){SC[k]=1;t('scroll',String(k));}});}
 var stt=null;window.addEventListener('scroll',function(){if(stt)return;stt=setTimeout(function(){stt=null;scr();},400);},{passive:true});
