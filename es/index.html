@@ -389,6 +389,7 @@ if(st()==='si')carica();else if(st()!=='no')document.addEventListener('DOMConten
 (function(){
 var ESCL=false;try{ESCL=localStorage.getItem('rf_escludi')==='1';}catch(e){}
 var SID='';try{SID=sessionStorage.getItem('rf_sid')||'';if(!SID){SID=Math.random().toString(36).slice(2)+Date.now().toString(36);sessionStorage.setItem('rf_sid',SID);}}catch(e){}
+/* rf-visitatore v1: codice anonimo fisso nel browser per riconoscere chi torna */var VID='';try{VID=localStorage.getItem('rf_vid')||'';if(!VID){VID='v'+Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem('rf_vid',VID);}}catch(e){}
 var AZ='b331365f-17db-4dda-aa2f-77a09427fe42',LANG=document.documentElement.lang||'';
 var PAG='wedding-'+(location.pathname.split('/').filter(Boolean).pop()||'root');
 function t(tipo,el,val,ok){if(ESCL)return;var p=new URLSearchParams(location.search);
